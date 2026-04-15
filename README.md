@@ -269,6 +269,31 @@ Fork it. Replace the canonical files with your domain. The scaffolding does the 
 
 ---
 
+## FAQ
+
+**Do I need all four plugins?**
+No. Each plugin works alone. Disable any in `.claude/settings.json` by removing it from the loaded list. The "Start with one piece" table above shows what's worth lifting individually.
+
+**Does it work without Notion / Gmail / Apify / Slack?**
+Yes. Every integration is optional. The CRM layer reads from local markdown if you set `crm_source: obsidian` in `q-system/my-project/founder-profile.md`. Email/calendar/Apify failures degrade gracefully — workflows still run on what's available.
+
+**Multiple instances on the same machine — won't they collide?**
+No. Each instance has its own `q-system/` directory, canonical files, memory, and output. The shared piece is the skeleton (plugins, agents, hooks, rules), pulled in via `kipi update`. Edit a rule once, propagate to all instances; private data stays in each.
+
+**Does `kipi update` clobber my customizations?**
+No. Update preserves `canonical/`, `my-project/`, `memory/`, `output/`, and `bus/`. It only pulls fresh skeleton (plugins, agents, hooks, scripts). Your data is yours.
+
+**What models does it work with?**
+Claude (any Sonnet or Opus). Haiku works for the lightweight hook scripts but not the morning routine. Multi-model coordination isn't built in — Claude Code is the assumed runtime.
+
+**What if I'm not a founder?**
+The pattern fits anyone managing concurrent relationships and compound knowledge: lawyers, sales teams, doctors, consultants, researchers. Replace `q-system/canonical/*.md` and `q-system/my-project/*.md` with your domain's source-of-truth files. Agents, loops, and morning routine work the same.
+
+**Why is everything named `kipi`?**
+Project codename. The CLI binary is `kipi`, the MCP server is `kipi-mcp`, the plugin group is `kipi-core`. Cosmetic — none of the logic depends on the name.
+
+---
+
 ## Contributing
 
 Early days. If you fork this and adapt it to a domain (law, medicine, sales, academic research), open an issue with a link. Contrib hooks:
