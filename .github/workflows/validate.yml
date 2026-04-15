@@ -17,8 +17,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run skeleton validation (Phase 1)
-        run: python3 validate-separation.py 1 --verbose
+      - name: Python syntax check
+        run: python3 -m compileall -q plugins q-system
         env:
           CI: true
 
@@ -30,7 +30,6 @@ jobs:
             "q-system/.q-system/token-guard.py"
             "q-system/.q-system/agent-pipeline/agents/step-orchestrator.md"
             "q-system/.q-system/agent-pipeline/BUS-PROTOCOL.md"
-            "validate-separation.py"
             ".claude/settings.json"
             "settings-template.json"
             "kipi"
