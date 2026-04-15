@@ -1,0 +1,61 @@
+#!/bin/bash
+set -euo pipefail
+
+KIPI_HOME="$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || realpath "$0" 2>/dev/null || echo "$0")")" && pwd)"
+
+usage() {
+  echo "kipi - manage your Claude Code cortex instances"
+  echo ""
+  echo "  kipi update          Pull latest skeleton into all registered instances"
+  echo "  kipi update --dry    Show what would happen without changing anything"
+  echo "  kipi new <path> <name>   Create a new instance from the skeleton"
+  echo "  kipi dev             Launch Claude Code with all plugins loaded"
+  echo "  kipi list            Show all registered instances"
+  echo "  kipi home            Print the skeleton path"
+  echo ""
+}
+
+case "${1:-help}" in
+  update)
+    shift || true
+    if [ "${1:-}" = "--dry" ]; then
+      bash "$KIPI_HOME/kipi-update.sh" --dry-run
+    else
+      bash "$KIPI_HOME/kipi-update.sh"
+    fi
+    ;;
+  new)
+    shift
+    bash "$KIPI_HOME/kipi-new-instance.sh" "$@"
+    ;;
+  dev)
+    claude --plugin-dir "$KIPI_HOME/plugins/kipi-core" \
+           --plugin-dir "$KIPI_HOME/plugins/kipi-ops" \
+           --plugin-dir "$KIPI_HOME/plugins/kipi-design"
+    ;;
+  list)
+    REGISTRY="$KIPI_HOME/instance-registry.json"
+    if [ ! -f "$REGISTRY" ]; then
+      echo "No instance-registry.json found. Run 'kipi new <path> <name>' to create your first instance."
+      exit 0
+    fi
+    python3 -c "
+import json
+d = json.load(open('$REGISTRY'))
+instances = d.get('instances', [])
+if not instances:
+    print('No instances registered yet.')
+else:
+    print('Registered instances:')
+    for i in instances:
+        t = i.get('type', 'subtree')
+        print(f\"  {i['name']:20s} {t:15s} {i['path']}\")
+"
+    ;;
+  home)
+    echo "$KIPI_HOME"
+    ;;
+  help|--help|-h|*)
+    usage
+    ;;
+esac

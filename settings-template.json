@@ -1,0 +1,245 @@
+{
+  "extraKnownMarketplaces": {
+    "kipi": {
+      "source": {
+        "source": "github",
+        "repo": "YOUR_USERNAME/claude-cortex"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "kipi-core@kipi": true
+  },
+  "outputStyle": "Entrepreneur OS",
+  "effortLevel": "thorough",
+  "autoMemoryEnabled": true,
+  "cleanupPeriodDays": 30,
+  "model": "opus",
+  "worktree": {
+    "symlinkDirectories": ["node_modules", ".cache", "q-system/output"]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$CLAUDE_PROJECT_DIR/q-system/hooks/statusline.sh\" 2>/dev/null || true"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(python3:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git switch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(git merge:*)",
+      "Bash(gh:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(tree:*)",
+      "Bash(echo:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf .*)",
+      "Bash(sudo*)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git rebase*)",
+      "Bash(chmod 777*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | bash*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/credentials*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/credentials*)",
+      "Write(.env)",
+      "Write(.env.*)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Write(**/credentials*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/q-system/hooks/git-health-check.sh\" 2>/dev/null || true",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/q-system/hooks/session-start.py\" 2>/dev/null || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/q-system/.q-system/scripts/md-prune.py\" 2>/dev/null || true",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/q-system/.q-system/scripts/memory-freshness-check.py\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PROJECT_DIR/q-system/.q-system/token-guard.py\" && python3 \"$CLAUDE_PROJECT_DIR/q-system/.q-system/token-guard.py\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PROJECT_DIR/q-system/.q-system/token-guard.py\" && python3 \"$CLAUDE_PROJECT_DIR/q-system/.q-system/token-guard.py\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/q-system/hooks/post-compact.sh\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/q-system/hooks/auto-commit.py\" 2>/dev/null || true",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/q-system/hooks/stop-logger.sh\" 2>/dev/null || true",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "mcpServers": {
+    "_INSTRUCTIONS_": "Uncomment and configure the servers you need. Replace YOUR_*_TOKEN placeholders with your actual tokens. Delete this _INSTRUCTIONS_ key when done.",
+
+    "_notion_api": {
+      "_comment": "Rename to 'notion_api' to enable. Get token from https://www.notion.so/my-integrations",
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "NOTION_TOKEN": "YOUR_NOTION_TOKEN"
+      }
+    },
+
+    "_apify": {
+      "_comment": "Rename to 'apify' to enable. Get token from https://console.apify.com/account#/integrations",
+      "command": "npx",
+      "args": ["-y", "@apify/actors-mcp-server@0.9.10"],
+      "env": {
+        "APIFY_TOKEN": "YOUR_APIFY_TOKEN",
+        "TOOLS": "actors,curious_coder/twitter-scraper,apify/web-scraper,apify/instagram-hashtag-scraper,apify/instagram-profile-scraper,apify/instagram-post-scraper,clockworks/tiktok-scraper,clockworks/tiktok-profile-scraper"
+      }
+    },
+
+    "_nano-banana": {
+      "_comment": "Rename to 'nano-banana' to enable. Image generation via Gemini. Install: npm i -g nano-banana-mcp",
+      "command": "nano-banana-mcp",
+      "env": {
+        "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY"
+      }
+    },
+
+    "_notebooklm": {
+      "_comment": "Rename to 'notebooklm' to enable. Browser-based Google auth on first run.",
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@latest"]
+    },
+
+    "reddit": {
+      "command": "uvx",
+      "args": ["reddit-no-auth-mcp-server"]
+    },
+
+    "_telegram": {
+      "_comment": "Rename to 'telegram' to enable. Get credentials from https://my.telegram.org",
+      "command": "telegram-mcp",
+      "env": {
+        "TG_APP_ID": "YOUR_TELEGRAM_APP_ID",
+        "TG_API_HASH": "YOUR_TELEGRAM_API_HASH"
+      }
+    },
+
+    "_obsidian": {
+      "_comment": "Rename to 'obsidian' to enable. Requires Obsidian Local REST API plugin. Get key from plugin settings.",
+      "command": "uvx",
+      "args": ["mcp-obsidian"],
+      "env": {
+        "OBSIDIAN_API_KEY": "YOUR_OBSIDIAN_API_KEY"
+      }
+    },
+
+    "_playwright": {
+      "_comment": "Rename to 'playwright' to enable. Browser automation alternative to Chrome MCP.",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  },
+  "toolConfigurations": {
+    "Read": {
+      "autoApprove": ["**/*"],
+      "deny": [".env", "**/.env"]
+    },
+    "Edit": {
+      "autoApprove": ["**/*"]
+    },
+    "Write": {
+      "autoApprove": ["**/*"]
+    },
+    "mcp__claude_ai_Notion__*": {
+      "autoApprove": ["*"]
+    },
+    "mcp__apify__*": {
+      "autoApprove": ["*"]
+    }
+  },
+  "_recommended_plugins": "Enable these in Claude Code plugin manager: document-skills@anthropic-agent-skills, Notion@claude-plugins-official (if using Notion CRM), github@claude-plugins-official"
+}

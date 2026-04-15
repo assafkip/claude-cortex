@@ -1,0 +1,47 @@
+#!/bin/bash
+set -euo pipefail
+
+# Pre-commit validation for kipi-system skeleton
+# Runs fast checks (phases 0-1) to catch regressions before commit.
+# Install: git config core.hooksPath .githooks
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+# Only run skeleton validation if this IS the skeleton repo (has instance-registry.json at root)
+if [ ! -f "$SCRIPT_DIR/instance-registry.json" ]; then
+    echo "[pre-commit] Not skeleton repo, skipping validation."
+    exit 0
+fi
+
+echo "[pre-commit] Checking for protected file changes..."
+
+# Check for protected file changes that need extra review
+PROTECTED_FILES=(
+    "q-system/CLAUDE.md"
+    "q-system/.q-system/token-guard.py"
+    "q-system/.q-system/agent-pipeline/agents/step-orchestrator.md"
+    "q-system/.q-system/agent-pipeline/BUS-PROTOCOL.md"
+    ".claude/settings.json"
+    "settings-template.json"
+    "kipi"
+)
+
+STAGED=$(git diff --cached --name-only)
+PROTECTED_CHANGED=()
+
+for pf in "${PROTECTED_FILES[@]}"; do
+    if echo "$STAGED" | grep -q "^${pf}$"; then
+        PROTECTED_CHANGED+=("$pf")
+    fi
+done
+
+if [ ${#PROTECTED_CHANGED[@]} -gt 0 ]; then
+    echo ""
+    echo "[pre-commit] WARNING: Protected files modified:"
+    for f in "${PROTECTED_CHANGED[@]}"; do
+        echo "  - $f"
+    done
+    echo "These files affect all instances. Review carefully before pushing."
+fi
+
+echo "[pre-commit] Validation passed."
