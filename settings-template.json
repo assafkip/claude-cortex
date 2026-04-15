@@ -3,7 +3,7 @@
     "kipi": {
       "source": {
         "source": "github",
-        "repo": "YOUR_USERNAME/claude-cortex"
+        "repo": "assafkip/claude-cortex"
       }
     }
   },

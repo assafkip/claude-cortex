@@ -116,5 +116,5 @@ Some instances (like car-research) are direct clones of kipi-system rather than 
 
 ```bash
 cd /path/to/my-instance
-git subtree pull --prefix=q-system ${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git} main --squash
+git subtree pull --prefix=q-system ${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git} main --squash
 ```

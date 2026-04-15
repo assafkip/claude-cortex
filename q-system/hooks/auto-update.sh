@@ -31,7 +31,7 @@ fi
 cd "$PROJ_DIR"
 
 # Check if remote has updates (timeout after 5 seconds)
-REMOTE="${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git}"
+REMOTE="${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git}"
 REMOTE_HEAD=$(timeout 5 git ls-remote "$REMOTE" HEAD 2>/dev/null | cut -f1 || true)
 
 if [ -z "$REMOTE_HEAD" ]; then

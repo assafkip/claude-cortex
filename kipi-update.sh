@@ -11,7 +11,7 @@ trap "" PIPE
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REGISTRY="$SCRIPT_DIR/instance-registry.json"
-SKELETON_REMOTE="${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git}"
+SKELETON_REMOTE="${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git}"
 SKELETON_BRANCH="main"
 DRY_RUN="${1:-}"
 

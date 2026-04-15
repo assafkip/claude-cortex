@@ -8,7 +8,7 @@ Claude Cortex is the layer that wraps around it. Persistent memory that survives
 
 The brainstem handles the moment. The cortex handles the week.
 
-If you starred [claude-focus](https://github.com/YOUR_USERNAME/claude-focus) for the attention hooks, this is the OS version. Same philosophy, scaled to multi-project operators.
+If you starred [claude-focus](https://github.com/assafkip/claude-focus) for the attention hooks, this is the OS version. Same philosophy, scaled to multi-project operators.
 
 ---
 
@@ -55,7 +55,7 @@ What's NOT in this repo: my actual data. All canonical memory, relationships, wr
 
 ```bash
 npm install -g @anthropic-ai/claude-code
-git clone https://github.com/YOUR_USERNAME/claude-cortex.git
+git clone https://github.com/assafkip/claude-cortex.git
 cd claude-cortex && claude
 ```
 
@@ -282,7 +282,7 @@ Early days. If you fork this and adapt it to a domain (law, medicine, sales, aca
 
 ## Related
 
-[claude-focus](https://github.com/YOUR_USERNAME/claude-focus) is the minimal version — 3 hooks, no plugins, for a single project. Claude Cortex is the OS you graduate to when one project isn't enough.
+[claude-focus](https://github.com/assafkip/claude-focus) is the minimal version — 3 hooks, no plugins, for a single project. Claude Cortex is the OS you graduate to when one project isn't enough.
 
 ---
 

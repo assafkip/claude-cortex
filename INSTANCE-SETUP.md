@@ -85,7 +85,7 @@ mkdir ~/Desktop/my-project && cd ~/Desktop/my-project
 git init
 
 # 3. Add kipi-system as a subtree
-git subtree add --prefix=q-system ${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git} main --squash
+git subtree add --prefix=q-system ${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git} main --squash
 
 # 4. Create your CLAUDE.md (see template below)
 

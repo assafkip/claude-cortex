@@ -16,7 +16,7 @@ The skeleton contains everything that's generic across all instances:
 - **CLAUDE.md**: Behavioral rules, operating modes, memory architecture, setup wizard
 - **Validation harness**: `validate-separation.py` verifies skeleton integrity and instance health
 
-The skeleton lives at `${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git}`.
+The skeleton lives at `${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git}`.
 
 ## Instances
 

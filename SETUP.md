@@ -22,7 +22,7 @@ Follow the official installation at https://docs.anthropic.com/en/docs/claude-co
 
 ### 2. Clone this repo
 ```bash
-git clone ${CORTEX_REMOTE:-https://github.com/YOUR_USERNAME/claude-cortex.git}
+git clone ${CORTEX_REMOTE:-https://github.com/assafkip/claude-cortex.git}
 cd q-founder-os
 ```
 
